@@ -1,0 +1,82 @@
+{{!< default}}
+
+<header id="header" class="default">
+    <button class="toggle-menu menu-left push-body">
+    <i class="fa fa-bars"></i>
+
+        {{#if @blog.logo}}
+            <a class="logo_purus" href="{{@blog.url}}">
+                <img src="{{@blog.logo}}" alt="{{@blog.title}}" />
+            </a>
+        {{/if}}
+
+    </button> 
+</header>
+
+{{> navigation}}
+
+<main role="main"> 
+  <div class="wrapper_purus">
+      <section class="banner_purus" itemscope itemtype="http://schema.org/Person">
+          {{#if author.image}}
+            <div class="authorimage_purus" style="background-image: url({{author.image}})" itemprop="image" ></div>
+          {{/if}}
+          <h1 class="authorname_purus"><span itemprop="author">{{author.name}}</span></h1>
+          <p class="authorbio_purus">{{author.bio}}</p>
+            {{#if author.location}}
+                <h5><span itemprop="address">{{author.location}}</span></h5>
+            {{/if}}
+            {{#if author.website}}
+                <h5><a href="{{author.website}}" itemprop="url">{{author.website}}</a></h5>
+            {{/if}}
+      </section>
+       <p class="number-posts_purus">Number of posts&#58;<span>{{pagination.total}}</span></p>
+
+      {{#foreach posts}}
+
+        <article class="article-list_purus" role="article" itemscope itemtype="http://schema.org/Article">
+            <ul>
+                <li>
+                    <time datetime="{{date published_at format="DD-MM-YYYY"}}" itemprop="datePublished">
+                        {{date format='DD MMM YYYY'}}
+                    </time>
+                </li>    
+            </ul>
+            
+            <h2 class="posttitle_purus" itemprop="headline">
+                {{#if featured}}<span class="featured_purus"><i class="fa fa-star"></i></span>{{/if}}
+                <a href="{{{url}}}" rel="bookmark">
+				    {{title}}
+				</a>
+            </h2>
+            
+            <div class="postcontent_purus" itemprop="articleBody">
+                <p>{{excerpt characters="80"}}&hellip;</p>
+            </div>
+            {{#if tags}}
+            <span class="tags-index_purus"><i class="fa fa-tag"></i>
+                {{tags separator=","}}
+            </span>
+            {{/if}}
+        </article>
+    
+    {{/foreach}}
+      
+    {{#if pagination}}
+    {{{pagination}}}
+	{{/if}}
+  </div>
+</main>
+ 
+<footer class="main-footer_purus" style="background-image: url({{author.cover}})">
+    <div class="wrapper-footer_purus">
+        <div class="center-footer_purus">
+            <h6>Recommend this author</h6>
+            <a target="_blank" href="http://twitter.com/share?text={{title}}&url={{url absolute="true"}}"><i class="fa fa-twitter"></i><span class="hidden_purus">Twitter</span></a> 
+            <a target="_blank" href="http://www.facebook.com/sharer.php?u={{url absolute="true"}}"><i class="fa fa-facebook"></i><span class="hidden_purus">Facebook</span></a>
+            <a target="_blank" href="https://plus.google.com/share?url={{url absolute="true"}}"><i class="fa fa-google-plus"></i> <span class="hidden_purus">Google+</span></a>
+        </div>
+    </div>
+    {{> footer}}
+    
+</footer>

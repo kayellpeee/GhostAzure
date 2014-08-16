@@ -1,0 +1,123 @@
+{{!< default}}
+
+<header id="header" class="default">
+    <button class="toggle-menu menu-left push-body">
+        <i class="fa fa-bars"></i>
+
+            {{#if @blog.logo}}
+                <a class="logo_purus" href="{{@blog.url}}">
+                    <img src="{{@blog.logo}}" alt="{{@blog.title}}" />
+                </a>
+            {{/if}}
+    </button> 
+    {{#post}} 
+        {{#if author}}
+            <div class="header-author_purus">
+                {{#if author.image}}
+                    <div class="authorimage_purus" style="background-image: url({{author.image}})"></div>
+                {{/if}}
+                <h4 class="authorname_purus"><a href="{{@blog.url}}/author/{{author.slug}}">{{author.name}}</a></h4>
+            </div> 
+        {{/if}}
+        <div class="post-reading-time"></div>
+</header>
+
+{{> navigation}}
+<main role="main">
+    <div class="wrapper_purus">
+  
+    <article class="article_purus" role="article" itemscope itemtype="http://schema.org/Article">
+        
+        <header class="postheader_purus">
+            <h1 class="posttitle_purus" itemprop="headline">{{title}}</h1>
+            <ul>
+                <li>
+                    <time class="date_purus" datetime="{{date format="YYYY-MM-DD"}}" itemprop="datePublished"> {{date format='DD MMM YYYY'}}</time>
+                </li>
+                <li>
+                    <a class="comments_purus" href="{{url}}#disqus_thread" data-disqus-identifier="{{id}}">Comments</a>
+                </li>
+            </ul>
+        </header>
+        
+        <div class="postcontent_purus" itemprop="articleBody">
+             
+            {{content}}
+        </div>
+        
+        <footer class="article-footer_purus">
+        {{#if author}}
+            <section class="written-by_purus">
+                <h6>Written by</h6>
+                <address itemscope itemtype="http://schema.org/Person">
+                    {{#if author.image}}
+                        <div class="authorimage_purus" style="background-image: url({{author.image}})" itemprop="image" ></div>
+                    {{/if}}
+                    <div class="about-author_purus">
+                        <h4 class="authorname_purus"><a href="{{@blog.url}}/author/{{author.slug}}"><span itemprop="author">{{author.name}}</span></a></h4>
+                        <p class="authorbio_purus">{{author.bio}}</p>
+                            {{#if author.location}}
+				                <h5><span itemprop="address">{{author.location}}</span></h5>
+				            {{/if}}
+				            {{#if author.website}}
+				                <h5><a href="{{author.website}}" itemprop="url">{{author.website}}</a></h5>
+				            {{/if}}
+                    </div>
+                </address>
+            </section>
+        {{/if}}
+        {{#if tags}}
+            <section class="tags-post_purus">
+                <h6>Tags</h6>
+                <span>{{tags separator=""}}</span>
+            </section>
+        {{/if}}
+        </footer>
+    
+    </article>
+    
+    <div class="disqusbox_purus">
+		
+		<div id="disqus_thread"><form onsubmit="my.loadDisqus();return false;" class=formBlock><input class="cmd_purus" type=submit value="Load Comments"></form>
+		</div>
+
+        {{! Disqus comments }}
+        <script type="text/javascript">
+        var disqus_shortname = 'example'; // required: replace example with your Disqus shortname
+            
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        var disqus_url = "{{url absolute="true"}}";
+        var disqus_identifier = '{{post.id}}';
+        var my = my || {};
+        my.loadDisqus = function() {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        };
+        </script>
+        
+        <noscript>Please enable javascript to <a rel="nofollow" href="http://disqus.com/?ref_noscript">discus this page, powered by Disqus.</a></noscript>
+        <style scoped=scoped>
+        @media print{
+         .disqusbox{display:none}
+        }
+        </style>
+    </div>
+   </div>
+</main>
+
+<footer class="main-footer_purus" style="background-image: url({{author.cover}})">
+    <div class="wrapper-footer_purus">
+        <div class="center-footer_purus">
+            <h6>Share this post</h6>
+            <a target="_blank" href="http://twitter.com/share?text={{title}}&url={{url absolute="true"}}"><i class="fa fa-twitter"></i><span class="hidden_purus">Twitter</span></a> 
+            <a target="_blank" href="http://www.facebook.com/sharer.php?u={{url absolute="true"}}"><i class="fa fa-facebook"></i><span class="hidden_purus">Facebook</span></a>
+            <a target="_blank" href="https://plus.google.com/share?url={{url absolute="true"}}"><i class="fa fa-google-plus"></i> <span class="hidden_purus">Google+</span></a>
+        </div>
+    {{/post}} 
+    </div>
+
+{{> footer}} 
+</footer>

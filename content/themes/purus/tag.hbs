@@ -1,0 +1,69 @@
+{{!< default}}
+
+<header id="header" class="default">
+    <button class="toggle-menu menu-left push-body">
+    <i class="fa fa-bars"></i>
+
+        {{#if @blog.logo}}
+            <a class="logo_purus" href="{{@blog.url}}">
+                <img src="{{@blog.logo}}" alt="{{@blog.title}}" />
+            </a>
+        {{/if}}
+
+    </button> 
+</header>
+
+{{> navigation}}
+
+<main role="main"> 
+  <div class="wrapper_purus">
+      <section class="banner_purus">
+          <h1>{{tag.name}}</h1>
+      </section>
+      <p class="number-posts_purus">Number of posts&#58;<span>{{pagination.total}}</span></p>
+
+ {{#foreach posts}}
+      
+        <article class="article-list_purus" role="article" itemscope itemtype="http://schema.org/Article">
+            <ul>
+                {{#if author.image}}<li><img class="author-thumb_purus" src="{{author.image}}" alt="Author image" nopin="nopin" /></li>{{/if}}
+                <li class="name-thumb_purus"><a href="{{@blog.url}}/author/{{author.slug}}"><span itemprop="author">{{author.name}}</span></a></li>
+                <li>
+                    <time datetime="{{date published_at format="DD-MM-YYYY"}}" itemprop="datePublished">
+                        {{date format='DD MMM YYYY'}}
+                    </time>
+                </li>
+            </ul>
+            <h2 class="posttitle_purus" itemprop="headline">
+                {{#if featured}}<span class="featured_purus"><i class="fa fa-star"></i></span>{{/if}}
+                <a href="{{{url}}}" rel="bookmark">
+				    {{title}}
+				</a>
+            </h2>
+         
+            <div class="postcontent_purus" itemprop="articleBody">
+                <p>{{excerpt characters="80"}}&hellip;</p>
+            </div>
+            {{#if tags}}
+            <span class="tags-index_purus"><i class="fa fa-tag"></i>
+                {{tags separator=","}}
+            </span>
+            {{/if}}
+        </article>
+    
+    {{/foreach}} 
+      
+    {{#if pagination}}
+    {{{pagination}}}
+	{{/if}}
+  </div>
+</main>
+ 
+<footer class="main-footer_purus" {{#if @blog.cover}}style="background-image: url({{@blog.cover}})"{{/if}}>
+    <div class="wrapper-footer_purus">
+        <div class="center-footer_purus">
+            {{> custom/subscribe this}}
+        </div>
+    </div>
+    {{> footer}}
+</footer> 
