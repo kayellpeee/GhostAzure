@@ -115,7 +115,7 @@ validate = function (value, key, validations) {
         validationOptions.unshift(value);
 
         // equivalent of validator.isSomething(option1, option2)
-        if (validator[validationName].apply(validator, validationOptions) !== goodResult) {
+        if (validator[validationName].apply(validator, validationOptions) !== goodResult && validationName !== 'isIn') {
             validationErrors.push(new errors.ValidationError('Settings validation (' + validationName + ') failed for ' + key, key));
         }
 
