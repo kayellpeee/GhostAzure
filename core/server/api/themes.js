@@ -1,22 +1,32 @@
-var when               = require('when'),
+// # Themes API
+// RESTful API for Themes
+var Promise            = require('bluebird'),
     _                  = require('lodash'),
     canThis            = require('../permissions').canThis,
     config             = require('../config'),
     errors             = require('../errors'),
     settings           = require('./settings'),
-    when               = require('when'),
     themes;
 
-// ## Themes
+/**
+ * ## Themes API Methods
+ *
+ * **See:** [API Methods](index.js.html#api%20methods)
+ */
 themes = {
-
+    /**
+     * ### Browse
+     * Get a list of all the available themes
+     * @param {{context}} options
+     * @returns {Promise(Themes)}
+     */
     browse: function browse(options) {
         options = options || {};
 
         return canThis(options.context).browse.theme().then(function () {
-            return when.all([
+            return Promise.all([
                 settings.read({key: 'activeTheme', context: {internal: true}}),
-                config().paths.availableThemes
+                config.paths.availableThemes
             ]).then(function (result) {
                 var activeTheme = result[0].settings[0].value,
                     availableThemes = result[1],
@@ -28,7 +38,6 @@ themes = {
                             && key !== '_messages'
                             && key !== 'README.md'
                             ) {
-
                         var item = {
                             uuid: key
                         };
@@ -43,19 +52,26 @@ themes = {
                     }
                 });
 
-                return { themes: themes };
+                return {themes: themes};
             });
         }, function () {
-            return when.reject(new errors.NoPermissionError('You do not have permission to browse themes.'));
+            return Promise.reject(new errors.NoPermissionError('You do not have permission to browse themes.'));
         });
     },
 
+    /**
+     * ### Edit
+     * Change the active theme
+     * @param {Theme} object
+     * @param {{context}} options
+     * @returns {Promise(Theme)}
+     */
     edit: function edit(object, options) {
         var themeName;
 
         // Check whether the request is properly formatted.
         if (!_.isArray(object.themes)) {
-            return when.reject({type: 'BadRequest', message: 'Invalid request.'});
+            return Promise.reject({type: 'BadRequest', message: 'Invalid request.'});
         }
 
         themeName = object.themes[0].uuid;
@@ -70,19 +86,19 @@ themes = {
                 });
 
                 if (!theme) {
-                    return when.reject(new errors.BadRequestError('Theme does not exist.'));
+                    return Promise.reject(new errors.BadRequestError('Theme does not exist.'));
                 }
 
                 // Activate the theme
                 return settings.edit(
-                    {settings: [{ key: 'activeTheme', value: themeName }]}, {context: {internal: true }}
+                    {settings: [{key: 'activeTheme', value: themeName}]}, {context: {internal: true}}
                 ).then(function () {
                     theme.active = true;
-                    return { themes: [theme]};
+                    return {themes: [theme]};
                 });
             });
         }, function () {
-            return when.reject(new errors.NoPermissionError('You do not have permission to edit themes.'));
+            return Promise.reject(new errors.NoPermissionError('You do not have permission to edit themes.'));
         });
     }
 };
